@@ -275,9 +275,8 @@ let rentalContract;
 window.addEventListener("load", () => {
   if (localStorage.getItem("createdProperty")) {
     const propertiesData = JSON.parse(localStorage.getItem("createdProperty"));
-    console.log(propertiesData);
+
     propertiesData.map((item, index) => {
-      console.log(item);
       var tbody = document.getElementById("propertiesTable");
       // create a new row element
       var row = document.createElement("tr");
@@ -509,16 +508,14 @@ async function createProperty(e) {
 }
 
 // Rent property
-async function rentProperty(event, propertyId) {
+async function rentProperty(event) {
   event.preventDefault();
-  const checkInDate = document.getElementById(
-    "checkin-date-" + propertyId
-  ).value;
-  const checkOutDate = document.getElementById(
-    "checkout-date-" + propertyId
-  ).value;
+  const checkInDate = document.getElementById("checkInDate").value;
+  const checkOutDate = document.getElementById("checkOutDate").value;
+  const propertyId = document.getElementById("propertyId").value;
   const totalPrice = pricePerNight * (checkOutDate - checkInDate);
   if (propertyId && pricePerNight) {
+    console.log(totalPrice);
     let spinner = document.getElementById("spinner");
     let button = document.getElementById("createPropertyButton");
     // loader = true;
@@ -527,7 +524,7 @@ async function rentProperty(event, propertyId) {
     //   button.style.display = "none";
     // }
     await fetch(
-      `http://localhost:3000/api/rent?name=${propertyName}&pricePerNight=${pricePerNight}`
+      `http://localhost:3000/api/rent?name=${propertyId}&pricePerNight=${pricePerNight}`
     ).then(async (res) => {
       const data = await res.json();
       // spinner.style.display = "none";
